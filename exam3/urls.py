@@ -1,0 +1,31 @@
+from django.urls import path
+from .views import *
+from accounts.views import upload_project3, project_list,download_project
+from django.conf import settings
+from django.conf.urls.static import static
+urlpatterns = [
+    path('phpint/',phpintro.as_view(),name='phpintro'),
+    path('basicphp/',basicphp_section,name='basicphp'),
+
+    path('intermediatephp/',intermediatephp_section,name='interphp'),
+    path('advancedphp/',advancedphp_section,name='advphp'),
+    # path('html_learn/',Basiclearn.as_view(),name='bhtml_learn')
+    path('php_learn/',phplearning_page.as_view(),name='php_learn'),
+    path('phpinter_learn/',phpinter_learn.as_view(),name='phpinter_learn'),
+    path('phpadv_learn/',phplearnadv.as_view(),name='phpadv_learn'),
+    
+    path('upload3/', upload_project3, name='upload_project3'),
+
+    path('download/<int:project_id>/', download_project, name='download_project'),
+    path('watch-php-videos/', watch_php_videos, name='watch_php_videos'),
+    path('add_comment_php/<int:video_id>/', add_comment_php, name='add_comment_php'),
+    path('toggle_like_php/<int:video_id>/', toggle_like_php, name='toggle_like_php'),
+    path('courseregphp/', courseregphp, name='courseregphp'),
+    path('register_php/', register_course_php, name='register_course_php'),
+    path('process-payment-php/', process_payment_php, name='process_payment_php'),
+    path('puzzle_game_php/', puzzle_game_php, name='puzzle3')
+
+
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

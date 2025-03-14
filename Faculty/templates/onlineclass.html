@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty Online Class</title>
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Boxicons CSS -->
+  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
+  <!-- Zego UIKit Prebuilt -->
+  <script src="https://unpkg.com/@zegocloud/zego-uikit-prebuilt/zego-uikit-prebuilt.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    :root {
+      --primary-color: #5469d4;
+      --secondary-color: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --bg-color: #f8fafc;
+      --sidebar-bg: #1e293b;
+      --sidebar-width: 260px;
+      --sidebar-text: #f1f5f9;
+      --sidebar-hover: #334155;
+      --sidebar-active: #5469d4;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-color);
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      overflow-y: auto;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+    }
+
+    .logo-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .mobile-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .user-profile {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .sidebar-menu {
+      padding: 20px 0;
+    }
+
+    .menu-category {
+      padding: 0 20px;
+      margin: 15px 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .menu-list {
+      list-style: none;
+    }
+
+    .menu-item {
+      margin-bottom: 5px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+
+    .menu-link:hover {
+      background: var(--sidebar-hover);
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-link.active {
+      background: var(--sidebar-hover);
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      position: sticky;
+      bottom: 0;
+      background: var(--sidebar-bg);
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 60px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .topbar-icon {
+      font-size: 22px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .content-wrapper {
+      flex: 1;
+      padding: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #video-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    .controls-container {
+      background: white;
+      padding: 15px;
+      border-top: 1px solid var(--secondary-color);
+    }
+
+    .control-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .meeting-info {
+      background: white;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .room-id {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .copy-link {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .copy-link:hover {
+      background: #4559b8;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .sidebar {
+        left: -100%;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="{% url 'facultyindex' %}" class="logo">
+        <i class='bx bx-book-reader'></i>
+        <span class="logo-name">Faculty Portal</span>
+      </a>
+      <i class='bx bx-x mobile-toggle'></i>
+    </div>
+    
+    <div class="user-profile">
+      <div class="avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+      <div class="user-info">
+        <span class="user-name">{{ request.user }}</span>
+        <span class="user-role">{{ request.user.Course }}</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-menu">
+      <div class="menu-category">Main Navigation</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <a href="{% url 'comments' %}" class="menu-link">
+            <i class='bx bx-message-rounded menu-icon'></i>
+            <span>Comments</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'view_projects' %}" class="menu-link">
+            <i class='bx bx-folder-open menu-icon'></i>
+            <span>Project Files</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="menu-category">Content Management</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <a href="{% url 'index' %}" class="menu-link">
+            <i class='bx bx-video-plus menu-icon'></i>
+            <span>Upload Videos</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'videos' %}" class="menu-link">
+            <i class='bx bx-video menu-icon'></i>
+            <span>View Videos</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'onlineclass' %}" class="menu-link active">
+            <i class='bx bx-laptop menu-icon'></i>
+            <span>Online Class</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+      <a href="{% url 'logout' %}" class="menu-link">
+        <i class='bx bx-log-out menu-icon'></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <button class="mobile-toggle">
+        <i class='bx bx-menu'></i>
+      </button>
+      <h2 class="page-title">Online Class</h2>
+      <div class="topbar-actions">
+        <i class='bx bx-bell topbar-icon'></i>
+        <i class='bx bx-cog topbar-icon'></i>
+      </div>
+    </div>
+    
+    <div class="content-wrapper">
+      <div class="meeting-info">
+        <div>
+          <h3>Welcome to your online classroom</h3>
+          <p class="room-id" id="room-id-display">Room ID: Loading...</p>
+        </div>
+        <button class="copy-link" id="copy-link-btn">
+          <i class='bx bx-copy'></i> Copy Meeting Link
+        </button>
+      </div>
+      
+      <div id="video-container"></div>
+    </div>
+  </div>
+
+  <div class="overlay"></div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sidebar toggle for mobile
+      const sidebar = document.querySelector('.sidebar');
+      const mobileToggles = document.querySelectorAll('.mobile-toggle');
+      const overlay = document.querySelector('.overlay');
+      
+      mobileToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+        });
+      });
+      
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+      
+      // Copy meeting link functionality
+      const copyLinkBtn = document.getElementById('copy-link-btn');
+      copyLinkBtn.addEventListener('click', function() {
+        const meetingLink = window.location.href;
+        navigator.clipboard.writeText(meetingLink).then(function() {
+          copyLinkBtn.innerHTML = '<i class="bx bx-check"></i> Copied!';
+          setTimeout(() => {
+            copyLinkBtn.innerHTML = '<i class="bx bx-copy"></i> Copy Meeting Link';
+          }, 2000);
+        });
+      });
+      
+      // Initialize Zego Cloud video conferencing
+      function getUrlParams(url) {
+        let urlStr = url.split('?')[1];
+        if (!urlStr) return {};
+        const urlSearchParams = new URLSearchParams(urlStr);
+        const result = Object.fromEntries(urlSearchParams.entries());
+        return result;
+      }
+      
+      // Generate a Token
+      const roomID = getUrlParams(window.location.href)['roomID'] || (Math.floor(Math.random() * 10000) + "");
+      const userID = Math.floor(Math.random() * 10000) + "";
+      const userName = "{{ request.user }}" || "userName" + userID;
+      const appID = 753909630;
+      const serverSecret = "bc71f7b82f528d8670c8e2d5130bfe9b";
+      const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(appID, serverSecret, roomID, userID, userName);
+      
+      // Display room ID
+      document.getElementById('room-id-display').textContent = "Room ID: " + roomID;
+      
+      // Create and join room
+      const zp = ZegoUIKitPrebuilt.create(kitToken);
+      zp.joinRoom({
+        container: document.querySelector("#video-container"),
+        sharedLinks: [{
+          name: 'Personal link',
+          url: window.location.protocol + '//' + window.location.host + window.location.pathname + '?roomID=' + roomID,
+        }],
+        scenario: {
+          mode: ZegoUIKitPrebuilt.VideoConference,
+        },
+        turnOnMicrophoneWhenJoining: true,
+        turnOnCameraWhenJoining: true,
+        showMyCameraToggleButton: true,
+        showMyMicrophoneToggleButton: true,
+        showAudioVideoSettingsButton: true,
+        showScreenSharingButton: true,
+        showTextChat: true,
+        showUserList: true,
+        maxUsers: 50,
+        layout: "Grid",
+        showLayoutButton: true,
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Login Page</title>
+    {% load static %}
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+      .bg-video video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -10;
+      }
+      .form-wrap {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        z-index: 1;
+      }
+
+      .login-register {
+        background: rgba(255, 255, 255, 0.1); /* Transparent background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-header img {
+        display: block;
+        margin: 0 auto 20px;
+        width: 100px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+      }
+
+      .form-bottom .not-registered {
+        margin: 0;
+      }
+
+      .links-container {
+        display: flex;
+        gap: 10px;
+      }
+
+      .links-container a {
+        text-decoration: none;
+        color: #000;
+      }
+
+
+      .bg-img {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+
+      .bg-img img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .input-group-append {
+        cursor: pointer;
+      }
+
+      .invalid-feedback {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-img">
+      <img src="{% static 'images/bg2.jpg' %}" alt="no image">
+    </div>
+    <!-- <div class="bg-video">
+      <video autoplay muted loop id="video-bg">
+        <source src="{% static 'video/bghome.mp4' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div> -->
+    <div class="form-wrap">
+      <div class="login-register">
+        <div class="login form">
+          <form action="" method="post">
+            {% csrf_token %}
+            {{form.errors}}
+            <div class="form-header">
+              <img src="{% static 'images/demo.png' %}" alt="logo">
+            </div>
+            <div class="form-group" id="username">
+              <label for="username">Username</label>
+              {{ form.username }}
+              {% if form.username.errors %}
+                <div class="invalid-feedback">
+                  {{ form.username.errors }}
+                </div>
+              {% endif %}
+            </div>
+            <div class="form-group" id="password">
+              <label for="password">Password</label>
+              <div class="input-group">
+                {{ form.password }}
+                <div class="input-group-append">
+                  <span class="input-group-text" id="togglePassword">
+                    <i class="fas fa-eye"></i>
+                  </span>
+                </div>
+                {% if form.password.errors %}
+                  <div class="invalid-feedback">
+                    {{ form.password.errors }}
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+            <div>
+              <button type="submit" class="btn btn-block bg-info text-white">Log In</button>
+            </div>
+            <div class="form-bottom">
+              <p class="not-registered" style="color:white">Don't have an account?</p>
+              <div class="links-container">
+                <a href="{% url 'reg' 'student' %}">Student Register</a>
+                <a href="{% url 'resetpwd' %}">Forgot password?</a>
+              </div>
+              
+            </div>
+          </form>
+          
+        </div>
+        <div class="row">
+          <div class="col"></div>
+              <div class="col ml-5" style="color:white;font-weight:bolder;"><a href="{% url 'main' %}">Home</a></div>
+          <div class="col"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4xF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script>
+      document.getElementById('togglePassword').addEventListener('click', function (e) {
+        const passwordField = document.querySelector('[name="password"]');
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+      });
+    </script>
+  </body>
+</html>

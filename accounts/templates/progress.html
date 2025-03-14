@@ -1,0 +1,194 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+     .navbar {
+                background: rgb(124,123,123);
+                background: linear-gradient(90deg, rgba(124,123,123,0.9501050420168067) 33%, rgba(237,237,237,1) 98%);
+                color: white;
+                overflow: hidden;
+                padding: 20px ; /* Adjust navbar padding */
+                line-height: 2; /* Adjust navbar height */
+            }
+                /* Rest of the CSS styles remain unchanged */
+        .navbar a {
+            float: left;
+            display: block;
+            color: white;
+            text-align: center;
+            font-size: 17px;
+            text-decoration: none;
+        }
+        .navbar h2 {
+            margin-left: 20px;
+        }
+        .prog {
+            background-color: rgb(200, 208, 208);
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .userdtl {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: center;
+        }
+        .download-btn {
+            display: block;
+            width: 150px;
+            margin: 0 auto;
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'h' %}"><h2>E-Learning</h2></a>
+        </div>
+    </nav>
+    </section>
+    <div class="prog">
+        <h1 style="text-align: center;">Progress Report</h1><br>
+        <div class="userdtl">Name of the candidate: <span style="font-weight: bold; font-size: larger;">{{ data.first_name }} {{ data.last_name }}</span></div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Marks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" style="background-color: #6cb0f5; color: white; text-align: center; font-weight: bold;">Python</td>
+                </tr>
+                <tr>
+                    <td>Basics</td>
+                {% for i in score %}
+                   {% if i.section == "Basic" %}
+                      <td>{{ i.score }}</td>
+
+                   {% endif %}
+                   {%endfor%}
+                </tr>
+                <tr>
+                    <td>Intermediate</td>
+                {% for i in score %}
+                   {% if i.section == "Intermediate" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                   {%endfor%}
+                </tr>
+                <tr>
+                    <td>Advanced</td>
+                {% for i in score %}
+                   {% if i.section == "Advanced" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                {% endfor %}
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color: #6cb0f5; color: white; text-align: center; font-weight: bold;">HTML</td>
+                </tr>
+                <tr>
+                    <td>Basics</td>
+                {% for i in score %}
+                   {% if i.section == "BasicHTML" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                {%endfor%}
+                </tr>
+                <tr>
+                    <td>Intermediate</td>
+                {% for i in score %}
+                   {% if i.section == "IntermediateHTML" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                {%endfor%}
+                </tr>
+                <tr>
+                    <td>Advanced</td>
+                {% for i in score %}
+                   {% if i.section == "AdvancedHTML" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                   {%endfor%}
+                </tr>
+                <tr>
+                    <td colspan="2" style="background-color: #6cb0f5; color: white; text-align: center; font-weight: bold;">PHP</td>
+                </tr>
+                <tr>
+                    <td>Basics</td>
+                {% for i in score %}
+                   {% if i.section == "BasicPHP" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                   {%endfor%}
+                </tr>
+                <tr>
+                    <td>Intermediate</td>
+                {% for i in score %}
+                   {% if i.section == "IntermediatePHP" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                   {%endfor%}
+                </tr>
+                <tr>
+                    <td>Advanced</td>
+
+                {% for i in score %}
+                   {% if i.section == "AdvancedPHP" %}
+                      <td>{{ i.score }}</td>
+                   {% endif %}
+                {%endfor%}
+                </tr>
+            </tbody>
+        </table>
+        <br><br><br>
+        <button class="download-btn" onclick="printPage()">Download PDF</button>
+    </div>
+
+    <script>
+        function printPage() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

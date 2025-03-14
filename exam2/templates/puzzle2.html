@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Word Scramble Game</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --success: #22c55e;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-800: #1f2937;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            margin: 0;
+            padding: 0;
+            color: var(--gray-800);
+            min-height: 100vh;
+        }
+        
+        .navbar {
+            background:linear-gradient(90deg, #2c3e50 0%, #3498db 100%);
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+        }
+        
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .navbar h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            background: linear-gradient(to right, #fff, rgba(255,255,255,0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: transform 0.2s ease;
+        }
+        
+        .navbar a:hover h2 {
+            transform: translateY(-1px);
+        }
+        
+        .root {
+            background: white;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            margin: 2rem auto;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .root:hover {
+            {% comment %} transform: translateY(-2px); {% endcomment %}
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+        
+        .title {
+            color: var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        #scrambleWord {
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: 0.2em;
+            color: var(--primary-dark);
+            margin: 2rem 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .hint {
+            background: var(--gray-50);
+            border-left: 4px solid var(--primary-light);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0.5rem;
+            font-size: 1.1rem;
+            color: var(--gray-800);
+        }
+        
+        #form {
+            margin: 2rem 0;
+        }
+        
+        input {
+            width: 100%;
+            padding: 1rem;
+            font-size: 1.1rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 0.75rem;
+            background: var(--gray-50);
+            transition: all 0.2s ease;
+        }
+        
+        input:focus {
+            
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+        
+        #output {
+            height: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+            color: var(--gray-800);
+        }
+        
+        .foot {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .foot > button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: white;
+        }
+        
+        .foot > button:nth-child(1) {
+            background: var(--success);
+        }
+        
+        .foot > button:nth-child(2) {
+            background: var(--primary);
+        }
+        
+        .foot > button:nth-child(3) {
+            background: var(--gray-800);
+        }
+        
+        .foot > button:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .foot > button:active {
+            transform: translateY(0);
+        }
+        
+        .score {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid var(--gray-200);
+        }
+        
+        .score h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--gray-800);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .modal.show {
+            opacity: 1;
+        }
+        
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: var(--shadow-lg);
+            width: 90%;
+            max-width: 400px;
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.show .modal-content {
+            transform: translateY(0);
+        }
+        
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            color: var(--gray-800);
+            cursor: pointer;
+            width: 2rem;
+            height: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background-color 0.2s ease;
+        }
+        
+        .close:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .modal-content p {
+            font-size: 1.25rem;
+            margin: 1.5rem 0;
+            color: var(--gray-800);
+        }
+        
+        .modal-content button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-content button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        @media (max-width: 640px) {
+            .root {
+                width: 95%;
+                padding: 1.5rem;
+                margin: 1rem auto;
+            }
+        
+            .foot {
+                grid-template-columns: 1fr;
+            }
+        
+            #scrambleWord {
+                font-size: 2rem;
+            }
+        
+            .title {
+                font-size: 1.5rem;
+            }
+        
+            .modal-content {
+                width: 85%;
+                margin: 1rem;
+            }
+        }
+        </style>
+</head>
+<body>
+<section id="one">
+    <nav class="navbar">
+        <div class="nav-logo">
+             <a href="{% url 'pythonintro' %}">
+                 <h2>E-Learning</h2></a>
+        </div>
+    </nav>
+</section>
+    <div class="root">
+        <h2 class="title">Python Word Scramble Game</h2>
+        <div id="scrambled">
+            <h2 id="scrambleWord">Word</h2>
+            <p id="hint"></p>
+        </div>
+        <div id="form">
+            <input id="input" type="text" placeholder="Guess correct word">
+        </div>
+        <h3 id="output">Result:</h3>
+        <div class="foot">
+            <button type="button" onclick="check()">Check</button>
+            <button type="button" onclick="refresh()">Next</button>
+            <button type="button" onclick="restart()">Restart</button>
+        </div>
+        <div class="score">
+            <h3 id="score">Score: 0</h3>
+            <h3 id="remaining">Remaining: 0</h3>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <p>Congratulations! You've completed the game with a score of <span id="finalScore">0</span> <span id="maxScore">0</span>.</p>
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        const words = [
+            "python", "variable", "function", "list", "tuple", "dictionary", "string", "integer",
+            "float", "boolean", "loop", "if", "else", "elif", "while", "for",
+            "break", "continue", "return", "class", "method", "object", "module", "package",
+            "import", "exception", "try", "except", "finally", "raise", "assert", "global",
+            "local", "lambda", "decorator", "inheritance", "polymorphism", "encapsulation", "iterator",
+            "generator"
+        ];
+
+        const hints = [
+            "High-level programming language", "Used to store data", "A block of code that performs a specific task",
+            "Ordered and changeable collection", "Ordered and unchangeable collection", "Unordered and changeable collection", "A sequence of characters", "A whole number",
+            "A number with a decimal point", "A true or false value", "Iterates over items in a sequence", "Executes code based on a condition", "Executes code if the condition is false", "Executes code if the previous conditions are false and the current condition is true", "Executes code while a specified condition is true", "Iterates over a sequence of items",
+            "Stops the loop before it has completed all iterations", "Skips the current iteration and continues with the next iteration", "Exits a function and returns a value", "Defines a blueprint for creating objects", "A function associated with an object", "An instance of a class", "A file containing Python definitions and statements", "A directory of Python modules",
+            "Used to include modules in Python", "Handles errors in Python", "Handles exceptions, runs regardless of whether the exception occurred or not", "Handles exceptions, runs if no error occurred", "Handles exceptions, runs after try block, regardless of the result", "Raises an exception", "Checks if a condition is true", "Declares a global variable", "Declares a local variable",
+            "Creates an anonymous function", "Modifies functions or classes", "Allows one class to inherit characteristics from another class", "Allows for objects of different classes to be treated as objects of a parent class", "Binds data and functions into a single unit", "Provides a way to access elements of a collection sequentially", "Returns a stream of values"
+        ];
+
+        let displayWord = "";
+        let displayHint = "";
+        let score = 0;
+        let maxScore = words.length;
+        let usedWords = new Set();
+        let remainingWords = words.slice(); // Create a copy of words array to track remaining words
+
+        function shuffle(str) {
+            let strArray = Array.from(str);
+            for (let i = 0; i < strArray.length; i++) {
+                let j = Math.floor(Math.random() * strArray.length);
+                [strArray[i], strArray[j]] = [strArray[j], strArray[i]];
+            }
+            return strArray.join("");
+        }
+
+        function check() {
+            let input = document.getElementById("input").value.toLowerCase();
+            let output = document.getElementById("output");
+            if (input === displayWord.toLowerCase()) {
+                output.innerHTML = "Result: Correct";
+                score++;
+                document.getElementById("score").innerText = "Score: " + score;
+                usedWords.add(displayWord);
+            } else {
+                output.innerHTML = "Result: Incorrect";
+            }
+            updateRemaining();
+        }
+
+        function refresh() {
+            if (remainingWords.length === 0) {
+                showModal();
+                return;
+            }
+
+            let index = Math.floor(Math.random() * remainingWords.length);
+            displayWord = remainingWords[index];
+            displayHint = hints[words.indexOf(displayWord)];
+            document.getElementById("scrambleWord").innerText = shuffle(displayWord).toUpperCase();
+            document.getElementById("hint").innerHTML = "<b>Hint:</b> " + displayHint;
+            document.getElementById("output").innerText = "Result:";
+            document.getElementById("input").value = "";
+            remainingWords.splice(index, 1); // Remove displayed word from remaining words
+            updateRemaining();
+        }
+
+        function restart() {
+            score = 0;
+            usedWords.clear();
+            remainingWords = words.slice(); // Reset remaining words to initial state
+            document.getElementById("score").innerText = "Score: " + score;
+            refresh();
+        }
+
+        function updateRemaining() {
+            let remaining = remainingWords.length;
+            document.getElementById("remaining").innerText = "Remaining: " + remaining;
+        }
+
+        function showModal() {
+            let modal = document.getElementById("myModal");
+            let finalScoreElement = document.getElementById("finalScore");
+            finalScoreElement.textContent = score;
+            modal.style.display = "block";
+        }
+
+        function closeModal() {
+            let modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+
+        document.getElementById("maxScore").innerText = "Max Score: " + maxScore;
+        document.getElementById("remaining").innerText = "Remaining: " + words.length;
+        refresh();
+    </script>
+</body>
+</html>

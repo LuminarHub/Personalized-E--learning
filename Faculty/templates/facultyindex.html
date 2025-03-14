@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Faculty Dashboard</title>
+  <!-- Google Fonts - Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Boxicons CSS -->
+  <link href="https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    :root {
+      --primary-color: #5469d4;
+      --secondary-color: #e2e8f0;
+      --text-primary: #1e293b;
+      --text-secondary: #64748b;
+      --bg-color: #f8fafc;
+      --sidebar-bg: #1e293b;
+      --sidebar-width: 260px;
+      --sidebar-text: #f1f5f9;
+      --sidebar-hover: #334155;
+      --sidebar-active: #5469d4;
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--bg-color);
+      display: flex;
+    }
+
+    /* Sidebar Styles */
+    .sidebar {
+      position: fixed;
+      left: 0;
+      width: var(--sidebar-width);
+      height: 100vh;
+      background: var(--sidebar-bg);
+      color: var(--sidebar-text);
+      overflow-y: auto;
+      transition: var(--transition);
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+    }
+
+    .logo-name {
+      font-size: 20px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .mobile-toggle {
+      display: none;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
+    .user-profile {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .user-name {
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .user-role {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .sidebar-menu {
+      padding: 20px 0;
+    }
+
+    .menu-category {
+      padding: 0 20px;
+      margin: 15px 0 10px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .menu-list {
+      list-style: none;
+    }
+
+    .menu-item {
+      margin-bottom: 5px;
+    }
+
+    .menu-link {
+      display: flex;
+      align-items: center;
+      padding: 10px 20px;
+      text-decoration: none;
+      color: var(--sidebar-text);
+      transition: var(--transition);
+      border-left: 3px solid transparent;
+    }
+
+    .menu-link:hover {
+      background: var(--sidebar-hover);
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-link.active {
+      background: var(--sidebar-hover);
+      border-left-color: var(--primary-color);
+    }
+
+    .menu-icon {
+      font-size: 20px;
+      margin-right: 10px;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      position: sticky;
+      bottom: 0;
+      background: var(--sidebar-bg);
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      flex: 1;
+      margin-left: var(--sidebar-width);
+      transition: var(--transition);
+    }
+
+    .topbar {
+      height: 60px;
+      background: white;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .topbar-icon {
+      font-size: 22px;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .content-wrapper {
+      padding: 25px;
+      width: 100%;
+    }
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+      font-size: 24px;
+      color: var(--text-primary);
+      margin-bottom: 10px;
+    }
+
+    .breadcrumbs {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .breadcrumbs a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+
+    .breadcrumbs .separator {
+      color: var(--text-secondary);
+    }
+
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title i {
+      color: var(--primary-color);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 99;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 992px) {
+      .sidebar {
+        left: -100%;
+      }
+
+      .sidebar.open {
+        left: 0;
+      }
+
+      .main-content {
+        margin-left: 0;
+      }
+
+      .mobile-toggle {
+        display: block;
+      }
+
+      .overlay.active {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="{% url 'facultyindex' %}" class="logo">
+        <i class='bx bx-book-reader'></i>
+        <span class="logo-name">Faculty Portal</span>
+      </a>
+      <i class='bx bx-x mobile-toggle'></i>
+    </div>
+    
+    <div class="user-profile">
+      <div class="avatar">{{ request.user.first_name|first }}{{ request.user.last_name|first }}</div>
+      <div class="user-info">
+        <span class="user-name">{{ request.user }}</span>
+        <span class="user-role">{{ request.user.Course }}</span>
+      </div>
+    </div>
+    
+    <div class="sidebar-menu">
+      <div class="menu-category">Main Navigation</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <a href="{% url 'comments' %}" class="menu-link">
+            <i class='bx bx-message-rounded menu-icon'></i>
+            <span>Comments</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'view_projects' %}" class="menu-link">
+            <i class='bx bx-folder-open menu-icon'></i>
+            <span>Project Files</span>
+          </a>
+        </li>
+      </ul>
+      
+      <div class="menu-category">Content Management</div>
+      <ul class="menu-list">
+        <li class="menu-item">
+          <a href="{% url 'index' %}" class="menu-link">
+            <i class='bx bx-video-plus menu-icon'></i>
+            <span>Upload Videos</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'videos' %}" class="menu-link">
+            <i class='bx bx-video menu-icon'></i>
+            <span>View Videos</span>
+          </a>
+        </li>
+        <li class="menu-item">
+          <a href="{% url 'onlineclass' %}" class="menu-link">
+            <i class='bx bx-laptop menu-icon'></i>
+            <span>Online Class</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+    
+    <div class="sidebar-footer">
+      <a href="{% url 'logout' %}" class="menu-link">
+        <i class='bx bx-log-out menu-icon'></i>
+        <span>Logout</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <button class="mobile-toggle">
+        <i class='bx bx-menu'></i>
+      </button>
+      <h2 class="page-title">Dashboard</h2>
+      <div class="topbar-actions">
+        <i class='bx bx-bell topbar-icon'></i>
+        <i class='bx bx-cog topbar-icon'></i>
+      </div>
+    </div>
+    
+    <div class="content-wrapper">
+      <div class="page-header">
+        <h1>Welcome, {{ request.user }}</h1>
+        <div class="breadcrumbs">
+          <a href="{% url 'facultyindex' %}">Home</a>
+          <span class="separator">/</span>
+          <span>Dashboard</span>
+        </div>
+      </div>
+      
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class='bx bx-detail'></i>
+            Faculty Dashboard
+          </h3>
+        </div>
+        <div class="card-body">
+          {% block content %}
+          {% endblock %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay"></div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const sidebar = document.querySelector('.sidebar');
+      const mobileToggles = document.querySelectorAll('.mobile-toggle');
+      const overlay = document.querySelector('.overlay');
+      
+      // Toggle sidebar on mobile
+      mobileToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+          sidebar.classList.toggle('open');
+          overlay.classList.toggle('active');
+        });
+      });
+      
+      // Close sidebar when clicking overlay
+      overlay.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('active');
+      });
+      
+      // Set active menu item based on current URL
+      const currentLocation = window.location.pathname;
+      const menuLinks = document.querySelectorAll('.menu-link');
+      
+      menuLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (currentLocation.includes(href) && href !== '{% url "facultyindex" %}') {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

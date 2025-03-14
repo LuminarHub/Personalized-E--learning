@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Title</title>
+    {% load static %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,700,0,0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <link rel="stylesheet" href="{% static 'js/home.js' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/fontawesome.min.css" integrity="sha512-d0olNN35C6VLiulAobxYHZiXJmq+vl+BGIgAxQtD5+kqudro/xNMvv2yIHAciGHpExsIbKX3iLg+0B6d0k4+ZA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha256-xyz" crossorigin="anonymous">
+
+</head>
+  <style>
+    .bg-video video{
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .dropdown .dropbtn {
+            font-size: 16px;
+            /* border: none; */
+            border-radius: 0.50rem;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+
+        }
+        .dropdown-content  {
+            right: 0;
+            display: none;
+            position: absolute;
+            background-color:white;
+            width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            cursor: pointer;
+            transition: width 2s, height 4s;
+            opacity: 0.8;
+            border-radius: 0.5rem;
+        }
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            border-radius: 0.50rem;
+        }
+
+        /* Change color of dropdown links on hover */
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+
+        }
+
+        /* Show the dropdown menu on hover */
+        .dropdown:hover .dropdown-content {
+            display: block;
+
+        }
+        ul li a:hover{
+            color: gray;
+
+        }
+        /* Styling for chatbot container */
+.chat-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    width: 300px; /* Adjust width as needed */
+    height: 400px; /* Adjust height as needed */
+    background-color: #fff; /* Adjust background color */
+    border: 1px solid #9a9999; /* Adjust border */
+    display: none;
+    /* Other styles */
+}
+
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* background-color: rgba(0, 0, 0, 0.6); */
+            z-index: -1;
+        }
+        .chat-container {
+            max-width: 900px;
+            margin: 10px auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 15px 15px;
+            background-color: #f9f9f9;
+        }
+        .chat-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            height: 325px;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow-y: scroll;
+            max-height: 325px;
+        }
+        .user-message {
+            text-align: right;
+            color: #0d6efd;
+        }
+        .bot-message {
+            text-align: left;
+            color: #212529;
+        }
+        #inputText {
+            width: calc(100% - 70px);
+            margin-right: 10px;
+        }
+        #sendBtn {
+            width:30px;
+            }
+      #open-chat-btn {
+
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 100%;
+            cursor: pointer;
+        }
+              /* Add your styles for the close button here */
+        #close-chat-btn {
+
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+        }
+              @keyframes colorChange {
+            0% {
+                color: rgb(255, 0, 0); /* Red */
+            }
+            25% {
+                color: rgb(0, 255, 0); /* Green */
+            }
+            50% {
+                color: rgb(0, 0, 255); /* Blue */
+            }
+            75% {
+                color: rgb(255, 255, 0); /* Yellow */
+            }
+            100% {
+                color: rgb(255, 0, 0); /* Red */
+            }
+        }
+
+        .career-link {
+            text-decoration: inherit;
+            animation: colorChange 5s infinite;
+        }
+
+  </style>
+  <body>
+    <div class="bg-video">
+        <!-- Replace 'video.mp4' with your video file -->
+        <video autoplay muted  id="video-bg">
+            <source src="{% static 'video/bghome.mp4' %}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <section id="one">
+        <nav id="nav">
+            <div class="nav-logo">
+                <div class="nav-heading">
+                    <span >E-Learning</span>
+                </div>
+
+            </div>
+            <ul class="nav-links">
+                    <li><a  href="{% url 'pro' %}" style="text-decoration:  inherit;">Profile</a></li>
+                    <div class="dropdown">
+                        <li><a href="#" style="text-decoration:  inherit;">Courses</a></li>
+                         <div class="dropdown-content">
+                            <li> <a href="{% url 'courseregpython' %}" style="text-decoration:  none; color:black;">Python</a></li>
+                            {% comment %} <li> <a  href="" style="text-decoration: none;color:black;">HTML</a></li>
+                            <li><a  href="" style="text-decoration:  none;color:black;">PHP</a></li> {% endcomment %}
+                            <li> <a  href="{% url 'coursereghtml' %}" style="text-decoration: none;color:black;">HTML</a></li>
+                            <li><a  href="{% url 'courseregphp' %}" style="text-decoration:  none;color:black;">PHP</a></li>
+                         </div>
+                     </div>
+                    
+
+                {% comment %} <li><a   href="" style="text-decoration: inherit;">Projects</a></li> {% endcomment %}
+                <li><a   href="{% url 'project_list' %}" style="text-decoration: inherit;">Projects</a></li>
+                <li><a   href="{% url 'ProgressCard' %}" style="text-decoration:  inherit;">Progress Report</a></li>
+
+                <div class="dropdown">
+                   <li><a href="" style="text-decoration:  inherit;">CERTIFICATE</a></li>
+                    <div class="dropdown-content">
+                    {% for file in uploaded_files %}
+                    
+                        {% if file%}
+                            {% if file.project_language == 'Python' %}
+                                <a href="{% url 'pythoncertificate' %}">PYTHON</a>
+                            {% elif file.project_language == 'HTML' %}
+                                <a href="{% url 'htmlcertificate' %}">HTML</a>
+                            {% elif file.project_language == 'PHP' %}
+                                <a href="{% url 'phpcertificate' %}">PHP</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                    </div>
+                </div> 
+                <li><a   href="{% url 'job_listings' %}" class="career-link">Careers</a></li>
+                {% comment %} <li><a   href="{% url 'feedback' %}" style="text-decoration:  inherit;">Feedback</a></li> {% endcomment %}
+                <li><a   href="{% url 'contact' %}" style="text-decoration:  inherit;">Contact</a></li>
+                <li><a href="{% url 'logout' %}"><span class="material-symbols-outlined" style="color: red;">logout</span></a></li>
+            </ul>
+        </nav>
+        <div class="content">
+            <div class="text-content">
+                <h1 class="white">Unlock Your Potential  with
+                    <strong>Tailored Learning</strong>
+                </h1>
+                <h4 class="blackish">Welcome to E-Learning, where learning meets customization! Our platform is designed to cater to your unique learning style, pace, and interests.
+                    Explore a diverse range of courses, personalize your learning journey, and achieve your goals on your terms. With interactive tools, adaptive resources, and a supportive community, embark on an educational adventure crafted just for you. Join us in revolutionizing the way you learn!</h4>
+               <br>
+            </div>
+        </div>
+    </section>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger
+  intent="WELCOME"
+  chat-title="sree"
+  agent-id="b02a4952-8418-44cc-a1ed-b5cd65701bd1"
+  language-code="en"
+></df-messenger>
+</body>
+</html>
