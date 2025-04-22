@@ -5,6 +5,7 @@ from datetime import timedelta
 
 
 class CustUser(AbstractUser):
+    email = models.EmailField(unique=True)
     phone = models.IntegerField(null=True)
     options = (
         ('Male', 'Male'),
@@ -89,7 +90,7 @@ class Payment(models.Model):
     payment_date = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return f"{self.email} - {self.course.course_name} - {self.payment_id}"
+        return f"{self.email} - {self.payment_id}"
     
     
     

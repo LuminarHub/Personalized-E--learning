@@ -1111,7 +1111,12 @@ def verify_payment(request):
             
             # Return success response
             messages.success(request,"Payment Succesfull")
-            return redirect('courseregpython')
+            if course.course_name == "Python":
+                return redirect('courseregpython')
+            elif course.course_name == "HTML":
+                return redirect('coursereghtml')
+            else:
+                return redirect('courseregphp')
             
         except Exception as e:
             # If payment verification fails
