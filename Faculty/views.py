@@ -39,7 +39,7 @@ def viewvideos(request):
     user = request.user
 
     # Retrieve all videos for the faculty user from the database, ordered by the most recent
-    videos = Video.objects.filter(faculty=user, course=user.Course).order_by('-uploaded_at')
+    videos = Video.objects.filter(faculty=user).order_by('-uploaded_at')
 
     # Pass the videos to the template for rendering
     return render(request, 'viewvideos.html', {'videos': videos})
@@ -53,7 +53,7 @@ def delete_video(request, video_id):
 
 def comments(request):
     user = request.user
-    videos = Video.objects.filter(faculty=user, course=user.Course)
+    videos = Video.objects.filter(faculty=user)
     return render(request, 'comments.html', {'videos': videos})
 
 
@@ -74,7 +74,7 @@ def video_comments(request, video_id):
 
 def view_projects(request):
     user = request.user
-    projects = UploadedFile.objects.filter(project_language=user.Course)
+    projects = UploadedFile.objects.all()
     return render(request, 'viewprojects.html', {'projects': projects})
 
 

@@ -34,7 +34,7 @@
             <tr>
                 <th>Student</th>
                 <th>Project Name</th>
-<!--                <th>Project Language</th>-->
+               <th>Language</th>
                 <th>Git Link</th>
                 <th>Project Description</th>
                 <th>File</th>
@@ -48,7 +48,7 @@
             <tr>
                 <td>{{ project.student.username }}</td>
                 <td>{{ project.project_name }}</td>
-<!--                <td>{{ project.project_language }}</td>-->
+               <td>{{ project.project_language }}</td>
                 <td><a href="{{ project.git_link }}" target="_blank">GitHub</a></td>
                 <td>{{ project.project_description }}</td>
                 <td><a href="{{ project.file.url }}" download>Download</a></td>
